@@ -4,23 +4,25 @@ __date__ = "2019/3/15 19:24"
 from django import forms
 
 from django import forms
-# from captcha.fields import CaptchaField
+from captcha.fields import CaptchaField
 from .models import UserProfile
 
-
 # 登录form
+from django import forms
+
+
 class LoginForm(forms.Form):
     # required=True该字段为必填字段
     username = forms.CharField(required=True)
     password = forms.CharField(required=True, min_length=5)
 
-# # 注册form
-# class RegisterForm(forms.Form):
-#     email = forms.EmailField(required=True)
-#     password = forms.CharField(required=True, min_length=5)
-#     # 验证码使用，error_messages修改错误显示信息
-#     captcha = CaptchaField(error_messages={"invalid": u"验证码错误"})
 
+# 注册form
+class RegisterForm(forms.Form):
+    email = forms.EmailField(required=True)
+    password = forms.CharField(required=True, min_length=5)
+    # 验证码使用，error_messages修改错误显示信息
+    captcha = CaptchaField(error_messages={"invalid": "验证码错误"})
 
 # # 忘记密码form
 # class ForgetForm(forms.Form):
