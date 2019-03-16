@@ -23,13 +23,13 @@
                 <div class="top">
                     <div class="wp">
                         <div class="fl">
-                            <p>服务电话：<b>33333333</b></p>
+                            <p>服务电话：<b>1235761254891</b></p>
                         </div>
                         <!--登录后跳转-->
 
                         <div class="personal">
                             <dl class="user fr">
-                                <dd>bobby<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
+                                <dd>{{ user.nickname }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
                                 <dt><img width="20" height="20" src="../media/image/2016/12/default_big_14.png"/></dt>
                             </dl>
                             <div class="userdetail">
@@ -37,8 +37,8 @@
                                     <dt><img width="80" height="80" src="../media/image/2016/12/default_big_14.png"/>
                                     </dt>
                                     <dd>
-                                        <h2>django</h2>
-                                        <p>bobby</p>
+                                        <h2>{{ user.nickname }}</h2>
+                                        <p>{{ user.username }}</p>
                                     </dd>
                                 </dl>
                                 <div class="btn">
@@ -96,7 +96,7 @@
                             <li>
                                 <a href="teachers-list.html">授课教师</a>
                             </li>
-                            <li><a href="org-list.html">授课机构</a></li>
+                            <li><a href="{% url 'org_list' %}">授课机构</a></li>
                         </ul>
                     </div>
                 </div>
