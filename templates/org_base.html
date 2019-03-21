@@ -68,7 +68,7 @@
                     <img class="fl" style="width: 112px;height: 103px" src="{{ MEDIA_URL }}{{ course_org.image }}"/>
                     <div class="head fl">
                         <h1>
-                            慕课网
+                            {{ course_org.name }}
                             <img src="{% static 'images/authentication.png' %}"/>
                             <img src="{% static 'images/gold.png' %}"/>
                         </h1>
@@ -78,11 +78,9 @@
                             <span class="key">5.0</span>
                         </p>
                     </div>
-                    <div class="btn fr collectionbtn  notlogin 
-                 " data-favid="22" data-fav-type="1">
+                    <div class="btn fr collectionbtn  notlogin" data-favid="22" data-fav-type="1">
                         {% if has_fav %}已收藏{% else %}收藏{% endif %}
                     </div>
-
                 </div>
             </div>
         </div>

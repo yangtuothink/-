@@ -1,17 +1,11 @@
 from django.shortcuts import render
 from django.views.generic import View
-# Create your views here.
-from django.shortcuts import render_to_response
 from django.http import HttpResponse
-from django.db.models import Q
-
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import CourseOrg, CityDict, Teacher
 from .forms import UserAskForm
-from courses.models import Course
 from operation.models import UserFavorite
-from courses.models import Course
 
 
 # 课程列表

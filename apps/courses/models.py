@@ -18,9 +18,9 @@ class Course(models.Model):
     degree = models.CharField(max_length=2, choices=(("cj", "初级"), ("zj", "中级"), ("gj", "高级")), verbose_name="难度")
     learn_time = models.IntegerField(default=0, verbose_name="学习时长(分钟数)")
     students = models.IntegerField(default=0, verbose_name="学习人数")
-    fav_num = models.IntegerField(default=0, verbose_name="收藏")
+    fav_nums = models.IntegerField(default=0, verbose_name="收藏")
     image = models.ImageField(max_length=100, upload_to="courses/%Y%m", verbose_name="封面图")
-    click_num = models.IntegerField(default=0, verbose_name="点击数")
+    click_nums = models.IntegerField(default=0, verbose_name="点击数")
     add_time = models.DateField(default=datetime.now, verbose_name="添加时间")
 
     class Meta:
