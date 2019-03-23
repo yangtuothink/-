@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.db import models
-from organization.models import CourseOrg
+from organization.models import CourseOrg, Teacher
 
 
 # Create your models here.
@@ -15,17 +15,34 @@ class Course(models.Model):
     TextField 可以对内容无限制的输入, 避免了使用 CharField 的 max_length 上限问题
     在这里临时使用 TextField 后续使用富文本编辑器的时候会另做更改
     """
+    teacher = models.ForeignKey(Teacher, verbose_name="讲师", null=True, blank=True)
     degree = models.CharField(max_length=2, choices=(("cj", "初级"), ("zj", "中级"), ("gj", "高级")), verbose_name="难度")
     learn_time = models.IntegerField(default=0, verbose_name="学习时长(分钟数)")
     students = models.IntegerField(default=0, verbose_name="学习人数")
     fav_nums = models.IntegerField(default=0, verbose_name="收藏")
     image = models.ImageField(max_length=100, upload_to="courses/%Y%m", verbose_name="封面图")
     click_nums = models.IntegerField(default=0, verbose_name="点击数")
+    category = models.CharField(max_length=20, verbose_name="课程类别", default="后端开发")
+    tag = models.CharField(max_length=10, default="", verbose_name="课程标签")
     add_time = models.DateField(default=datetime.now, verbose_name="添加时间")
+    youneed_know = models.CharField(max_length=300, default="", verbose_name="课程须知")
+    teacher_tell = models.CharField(max_length=300, default="", verbose_name="老师告诉你")
 
     class Meta:
         verbose_name = "课程"
         verbose_name_plural = verbose_name
+
+    # 获取课程章节数
+    def get_zj_nums(self):
+        return self.lesson_set.all().count()
+
+    # 获取课程
+    def get_learn_users(self):
+        return self.usercourse_set.all()[:5]
+
+    # 取得课程所有章节
+    def get_course_lesson(self):
+        return self.lesson_set.all()
 
     def __str__(self):
         return self.name
@@ -42,6 +59,13 @@ class Lesson(models.Model):
         verbose_name = u"章节"
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return self.name
+
+    # 获取章节所有视频
+    def get_lesson_video(self):
+        return self.video_set.all()
+
 
 # 视频表
 class Video(models.Model):
@@ -55,6 +79,9 @@ class Video(models.Model):
         verbose_name = u"视频"
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return self.name
+
 
 # 课程资源表
 class CourseResource(models.Model):
@@ -67,3 +94,6 @@ class CourseResource(models.Model):
     class Meta:
         verbose_name = u"课程资源"
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
