@@ -6,7 +6,7 @@ from django.views.generic.base import View
 from django.contrib.auth.hashers import make_password
 
 from .models import UserProfile, EmailVerifyRecord
-from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm
+from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UploadImageForm
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixin
 
@@ -154,7 +154,20 @@ class ForgetPwdView(View):
         else:
             return render(request, "forgetpwd.html", {"forget_form": forget_form})
 
+
 # 用户信息
 class UserInfoView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, "usercenter-info.html", {})
+
+
+# 用户修改头像处理
+class UploadImageView(LoginRequiredMixin, View):
+    def post(self, request):
+        image_form = UploadImageForm(request.POST, request.FILES, instance=request.user)
+        if image_form.is_valid():
+            image_form.save()
+            return HttpResponse('{"status":"success"}', content_type='application/json')
+        else:
+            return HttpResponse('{"status":"fail"}', content_type='application/json')
+
