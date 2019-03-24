@@ -55,4 +55,7 @@ urlpatterns = [
 
     # 课程相关 URL 配置
     url(r'^course/', include('courses.urls', namespace="course")),
+
+    # 用户相关 URL 配置
+    url(r'^users/', include('users.urls', namespace="users")),
 ]
