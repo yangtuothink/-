@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from django.http import HttpResponse
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 from .models import CourseOrg, CityDict, Teacher
 from .forms import UserAskForm
@@ -17,6 +18,12 @@ class OrgView(View):
         all_orgs = CourseOrg.objects.all()
         # 机构城市
         all_citys = CityDict.objects.all()
+        # 机构搜索功能
+        search_keywords = request.GET.get('keywords', '')
+        if search_keywords:
+            all_orgs = all_orgs.filter(
+                Q(name__icontains=search_keywords) |
+                Q(desc__icontains=search_keywords))
         # 热门机构
         hot_orgs = all_orgs.order_by("click_nums")[:3]
         # 取出筛选类别
@@ -178,6 +185,13 @@ class TercherListView(View):
     def get(self, request):
         # 所有讲师
         all_teachers = Teacher.objects.all()
+        # 讲师搜索功能
+        search_keywords = request.GET.get('keywords', '')
+        if search_keywords:
+            all_teachers = all_teachers.filter(
+                Q(name__icontains=search_keywords) |
+                Q(work_company__icontains=search_keywords) |
+                Q(work_position__icontains=search_keywords))
         # 教师人气排序
         sort = request.GET.get("sort", "")
         if sort:
