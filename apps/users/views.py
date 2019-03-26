@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.backends import ModelBackend
@@ -161,7 +162,7 @@ class UserInfoView(LoginRequiredMixin, View):
         return render(request, "usercenter-info.html", {})
 
 
-# 用户修改头像处理
+# 个人中心用户修改头像处理
 class UploadImageView(LoginRequiredMixin, View):
     def post(self, request):
         image_form = UploadImageForm(request.POST, request.FILES, instance=request.user)
@@ -171,3 +172,47 @@ class UploadImageView(LoginRequiredMixin, View):
         else:
             return HttpResponse('{"status":"fail"}', content_type='application/json')
 
+
+# 个人中心更新修改密码
+class UpdatePwdView(View):
+
+    def post(self, request):
+        modify_form = ModifyPwdForm(request.POST)
+        if modify_form.is_valid():
+            pwd1 = request.POST.get("password1", "")
+            pwd2 = request.POST.get("password2", "")
+            if pwd1 != pwd2:
+                return HttpResponse('{"status":"fail","msg":"密码不一致"}', content_type='application/json')
+            user = request.user
+            user.password = make_password(pwd2)
+            user.save()
+            return HttpResponse('{"status":"success"}', content_type='application/json')
+        else:
+            return HttpResponse(json.dumps(modify_form.errors), content_type='application/json')
+
+
+# 发送邮箱验证码
+class SendEmailCodeView(LoginRequiredMixin, View):
+    def get(self, request):
+        email = request.GET.get('email', '')
+        # 判断邮箱是否绑定
+        if UserProfile.objects.filter(email=email):
+            return HttpResponse('{"email":"邮箱已存在"}', content_type='application/json')
+        send_register_email(email, "update_email")
+        return HttpResponse('{"status":"success"}', content_type='application/json')
+
+
+# 修改邮箱验证码
+class UpdateEmailView(LoginRequiredMixin, View):
+    def post(self, request):
+        email = request.POST.get('email', '')
+        code = request.POST.get('code', '')
+
+        existed_records = EmailVerifyRecord.objects.filter(email=email, code=code, send_type='update_email')
+        if existed_records:
+            user = request.user
+            user.email = email
+            user.save()
+            return HttpResponse('{"status":"success"}', content_type='application/json')
+        else:
+            return HttpResponse('{"email":"验证码错误"}', content_type='application/json')

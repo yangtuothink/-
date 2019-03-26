@@ -20,49 +20,41 @@
 <section class="headerwrap headerwrap2">
     <header>
         <div class="header2 header">
-
-     {% if request.user.is_authenticated %}
-                <div class="top">
-                    <div class="wp">
-                        <div class="fl">
-                            <p>服务电话：<b>1235761254891</b></p>
-                        </div>
-                        <!--登录后跳转-->
-
+            <div class="top">
+                <div class="wp">
+                    <div class="fl"><p>服务电话：<b>4008123123</b></p></div>
+                    {% if request.user.is_authenticated %}
                         <div class="personal">
                             <dl class="user fr">
-                                <dd>{{ user.nickname }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
-                                <dt><img width="20" height="20" src="../media/image/2016/12/default_big_14.png"/></dt>
+                                <dd>{{ user.username }}<img class="down fr" src="{% static 'images/top_down.png' %}"/>
+                                </dd>
+                                <dt><img width="20" height="20" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
                             </dl>
                             <div class="userdetail">
                                 <dl>
-                                    <dt><img width="80" height="80" src="../media/image/2016/12/default_big_14.png"/>
-                                    </dt>
+                                    <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
                                     <dd>
-                                        <h2>{{ user.nickname }}</h2>
-                                        <p>{{ user.username }}</p>
+                                        <h2>{{ request.user.nickname }}</h2>
+                                        <p>{{ request.user.username }}</p>
                                     </dd>
                                 </dl>
                                 <div class="btn">
-                                    <a class="personcenter fl" href="usercenter-info.html">进入个人中心</a>
-                                    <a class="fr" href="/logout/">退出</a>
+                                    <a class="personcenter fl" href="{% url 'users:user_info' %}">进入个人中心</a>
+                                    <a class="fr" href="">退出</a>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <a href="">
+                            <div class="msg-num">
+                                <span id="MsgNum">sss</span>
+                            </div>
+                        </a>
+                    {% else %}
+                        <a style="color:white" class="fr registerbtn" href="{% url 'register' %}">注册</a>
+                        <a style="color:white" class="fr loginbtn" href="{% url 'login' %}">登录</a>
+                    {% endif %}
                 </div>
-            {% else %}
-                <div class="top">
-                    <div class="wp">
-                        <div class="fl">
-                            <p>服务电话：<b>26499312</b></p></div>
-                        <a style="color:white" class="fr registerbtn" href="{% url "register" %}">注册</a>
-                        <a style=" color:white" class="fr loginbtn" href="/login/">登录</a>
-                    </div>
-                </div>
-            {% endif %}
-
-
+            </div>
             <div class="middle companyheader">
                 <div class="wp">
                     <img class="fl" style="width: 112px;height: 103px" src="{{ MEDIA_URL }}{{ course_org.image }}"/>

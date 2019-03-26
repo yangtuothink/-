@@ -22,12 +22,14 @@ def random_str(randomlength=8):
 
 # 发送邮箱验证码
 def send_register_email(email, send_type="register"):
+
     # 创建邮箱验证码实例
     email_record = EmailVerifyRecord()
     if send_type == "update_email":
         code = random_str(4)
     else:
         code = random_str(16)
+
     # 将数据验证码、邮箱保存、验证类型保存
     email_record.code = code
     email_record.email = email
@@ -57,7 +59,7 @@ def send_register_email(email, send_type="register"):
 
     elif send_type == 'update_email':
         email_title = '羊驼之家在线邮箱修改验证码'
-        email_body = "你的邮箱验证码为：{0}".format(code)
+        email_body = "您的邮箱验证码为：{0}".format(code)
         send_status = send_mail(email_title, email_body, EMAIL_FROM, [email])
         if send_status:
             pass
