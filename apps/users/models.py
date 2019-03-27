@@ -7,10 +7,10 @@ from django.contrib.auth.models import AbstractUser
 # 用户表
 # 继承了 auth 并拓展了词条
 class UserProfile(AbstractUser):
-    nickname = models.CharField(max_length=50, verbose_name="昵称", default="")
+    nick_name = models.CharField(max_length=50, verbose_name="昵称", default="")
     birday = models.DateField(verbose_name="生日", null=True)
     gender = models.CharField(max_length=6, choices=(("male", "男"), ("female", "女")), default="female")
-    addres = models.CharField(max_length=100, default="")
+    address = models.CharField(max_length=100, default="")
     mobile = models.CharField(max_length=11, null=True, default="")
     image = models.ImageField(max_length=100, upload_to="image/%Y/%m", default="image/default.png")
 

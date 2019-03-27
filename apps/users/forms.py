@@ -6,10 +6,8 @@ from django import forms
 from captcha.fields import CaptchaField
 from .models import UserProfile
 
+
 # 登录form
-from django import forms
-
-
 class LoginForm(forms.Form):
     # required=True该字段为必填字段
     username = forms.CharField(required=True)
@@ -43,8 +41,8 @@ class UploadImageForm(forms.ModelForm):
         fields = ['image']
 
 
-# # 用户信息form
-# class UserInfoForm(forms.ModelForm):
-#     class Meta:
-#         model = UserProfile
-#         fields = ['nick_name', 'gender', 'birday', 'address', 'mobile']
+# 用户信息form
+class UserInfoForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['nick_name', 'gender', 'birday', 'address', 'mobile']

@@ -3,8 +3,9 @@ __author__ = "yangtuo"
 __date__ = "2019/3/24 14:20"
 
 from django.conf.urls import url
-from .views import UserInfoView, UploadImageView, UpdatePwdView
-from .views import SendEmailCodeView, UpdateEmailView
+from .views import UserInfoView, UploadImageView, UpdatePwdView, MyFavTeacherView
+from .views import SendEmailCodeView, UpdateEmailView, MyCourseView, MyFavOrgView
+from .views import MyFavCoureseView
 
 urlpatterns = [
     # 用户个人中心信息
@@ -22,4 +23,15 @@ urlpatterns = [
     # 用户中心修改邮箱
     url(r'^update_email/', UpdateEmailView.as_view(), name="update_email"),
 
+    # 用户中心我的课程
+    url(r'^mycourse/', MyCourseView.as_view(), name="mycourse"),
+
+    # 用户中心收藏课程机构
+    url(r'^myfav/org/', MyFavOrgView.as_view(), name="myfav_org"),
+
+    # 用户中心收藏授课讲师
+    url(r'^myfav/teacher/', MyFavTeacherView.as_view(), name="myfav_teacher"),
+
+    # 用户中心收藏课程
+    url(r'^myfav/course/', MyFavCoureseView.as_view(), name="myfav_course"),
 ]

@@ -5,8 +5,8 @@
         <div class="wp">
             <ul class="crumbs">
                 <li><a href="{% url 'index' %}">首页</a>></li>
-                <li><a href="/user/home/">个人中心</a>></li>
-                <li>个人信息</li>
+                <li><a href="{% url 'users:user_info' %}">个人中心</a>></li>
+                <li>个人资料</li>
             </ul>
         </div>
     </section>
@@ -66,7 +66,7 @@
                         </li>
                         <li class="p_infor_city">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：
                             <input type="text" name="address" id="address" placeholder="请输入你的地址"
-                                   value="{{ request.user.addres }}"
+                                   value="{{ request.user.address }}"
                                    maxlength="10">
                             <i class="error-tips"></i>
                         </li>
