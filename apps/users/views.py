@@ -5,6 +5,7 @@ from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic.base import View
 from django.contrib.auth.hashers import make_password
+from django.core.urlresolvers import reverse
 
 from .models import UserProfile, EmailVerifyRecord
 from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UploadImageForm, UserInfoForm
@@ -32,8 +33,8 @@ class CustomBackend(ModelBackend):
 class IndexView(View):
     def get(self, request):
         all_banner = Banner.objects.all().order_by("index")
-        courses = Course.objects.filter(is_banner=False)[:5]
-        banner_courses = Course.objects.filter(is_banner=False)[:3]
+        courses = Course.objects.filter(is_banner=False)[:6]
+        banner_courses = Course.objects.filter(is_banner=True)[:3]
         course_orgs = CourseOrg.objects.all()[:15]
         return render(request, "index.html", {
             "all_banner": all_banner,
@@ -47,7 +48,7 @@ class IndexView(View):
 class LogoutView(View):
     def get(self, request):
         logout(request)
-        from django.core.urlresolvers import reverse
+
         return HttpResponseRedirect(reverse("index"))
 
 
@@ -70,7 +71,7 @@ class LoginView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return render(request, "index.html", {"user": user})
+                    return HttpResponseRedirect(reverse("index"))
                 else:
                     return render(request, "login.html", {"msg": "用户未激活"})
             else:
@@ -328,3 +329,19 @@ class MyMessageView(LoginRequiredMixin, View):
         return render(request, "usercenter-message.html", {
             "messanges": messanges
         })
+
+
+# 全局404处理函数
+def page_not_found(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('404.html', {})
+    response.status_code = 404
+    return response
+
+
+# 全局500处理函数
+def page_error(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('500.html', {})
+    response.status_code = 500
+    return response

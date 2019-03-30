@@ -25,9 +25,14 @@ sys.path.insert(0, os.path.join(BASE_DIR, "extra_apps"))
 SECRET_KEY = 'd2+m!5f9%o%to%c1#5k3ddnb=q__(7e2udza$8vo&ad4=5-p5s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+# 生产环境配置
+DEBUG = False
+ALLOWED_HOSTS = ['*']
+
+# DEBUG = True
+# ALLOWED_HOSTS = []
+
 
 """自定义对 auth 的用户验证
 
@@ -82,6 +87,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # media上下文处理器
                 'django.core.context_processors.media'
             ],
         },
@@ -146,11 +152,13 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+# 静态文件配置
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
-]
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 
+# 上传文件配置
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -163,3 +171,8 @@ EMAIL_HOST_PASSWORD = "ytyt521521521"
 EMAIL_USE_TLS = False
 # 发件人
 EMAIL_FROM = "13160035772@163.com"
+
+# 生产环境static文件配置
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+DATE_FORMAT = 'Y-m-d'

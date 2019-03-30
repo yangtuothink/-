@@ -22,7 +22,7 @@ import xadmin
 from users.views import IndexView, LoginView, RegisterView, ActiveUserView
 from users.views import ForgetPwdView, ResetView, ModifyPwdView, LogoutView
 from organization.views import OrgView
-from MxOnline.settings import MEDIA_ROOT
+from MxOnline.settings import MEDIA_ROOT, STATIC_ROOT
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
@@ -64,4 +64,19 @@ urlpatterns = [
 
     # 用户相关 URL 配置
     url(r'^users/', include('users.urls', namespace="users")),
+
+    # 配置上传文件的访问处理函数
+    url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
+
+    # 富文本相关url
+    # url(r'^ueditor/', include('DjangoUeditor.urls')),
+
+    # 生产环境static url配置
+    url(r'^static/(?P<path>.*)$', serve, {"document_root": STATIC_ROOT}),
 ]
+
+# 全局404页面配置
+handler404 = 'users.views.page_not_found'
+
+# 全局500页面配置
+handler500 = 'users.views.page_error'
