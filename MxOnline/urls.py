@@ -19,7 +19,8 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 
 import xadmin
-from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView
+from users.views import IndexView, LoginView, RegisterView, ActiveUserView
+from users.views import ForgetPwdView, ResetView, ModifyPwdView, LogoutView
 from organization.views import OrgView
 from MxOnline.settings import MEDIA_ROOT
 
@@ -34,10 +35,15 @@ urlpatterns = [
     url(r'^media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
 
     # 主页
-    url(r'^$', TemplateView.as_view(template_name="index.html"), name="index"),
+    url(r'^$', IndexView.as_view(), name="index"),
 
     # 登录
     url(r'^login/$', LoginView.as_view(), name="login"),
+
+    # 登出
+    url(r'^logout/$', LogoutView.as_view(), name="logout"),
+
+    # 注册
     url(r'^register/$', RegisterView.as_view(), name="register"),
 
     # 激活

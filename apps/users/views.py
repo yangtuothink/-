@@ -1,6 +1,6 @@
 import json
-from django.shortcuts import render, HttpResponse
-from django.contrib.auth import authenticate, login
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic.base import View
@@ -10,9 +10,11 @@ from .models import UserProfile, EmailVerifyRecord
 from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UploadImageForm, UserInfoForm
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixin
-from operation.models import UserCourse, UserFavorite
+from operation.models import UserCourse, UserFavorite, UserMessage
 from organization.models import CourseOrg, Teacher
 from courses.models import Course
+from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+from .models import Banner
 
 
 # 重写 auth 验证方法
@@ -24,6 +26,29 @@ class CustomBackend(ModelBackend):
                 return user
         except Exception as e:
             return None
+
+
+# 首页
+class IndexView(View):
+    def get(self, request):
+        all_banner = Banner.objects.all().order_by("index")
+        courses = Course.objects.filter(is_banner=False)[:5]
+        banner_courses = Course.objects.filter(is_banner=False)[:3]
+        course_orgs = CourseOrg.objects.all()[:15]
+        return render(request, "index.html", {
+            "all_banner": all_banner,
+            "courses": courses,
+            "banner_courses": banner_courses,
+            "course_orgs": course_orgs,
+        })
+
+
+# 用户登出
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        from django.core.urlresolvers import reverse
+        return HttpResponseRedirect(reverse("index"))
 
 
 # 登录验证
@@ -132,10 +157,10 @@ class RegisterView(View):
             user_profile.save()
 
             # 写入欢迎注册消息
-            # user_message = UserMessage()
-            # user_message.user = user_profile.id
-            # user_message.message = "欢迎注册猫了个咪在线网"
-            # user_message.save()
+            user_message = UserMessage()
+            user_message.user = user_profile.id
+            user_message.message = "欢迎注册羊驼在线网"
+            user_message.save()
 
             send_register_email(user_name, "register")
             return render(request, "login.html")
@@ -282,4 +307,24 @@ class MyFavCoureseView(LoginRequiredMixin, View):
         return render(request, 'usercenter-fav-course.html', {
             "course_list": course_list,
             "current_page": current_page
+        })
+
+
+# 我的消息
+class MyMessageView(LoginRequiredMixin, View):
+    def get(self, request):
+        all_message = UserMessage.objects.filter(user=request.user.id)
+        # 用户进入消息界面清空未读消息
+        all_unread_message = UserMessage.objects.filter(user=request.user.id, has_read=False)
+        for unread_message in all_unread_message:
+            unread_message.has_read = True
+            unread_message.save()
+        # 分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        messanges = Paginator(all_message, 1, request=request)
+        return render(request, "usercenter-message.html", {
+            "messanges": messanges
         })

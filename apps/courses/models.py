@@ -11,6 +11,7 @@ class Course(models.Model):
     name = models.CharField(max_length=50, verbose_name="课程名称")
     desc = models.CharField(max_length=300, verbose_name="课程描述")
     detail = models.TextField(verbose_name="课程详情")
+    is_banner = models.BooleanField(default=False, verbose_name="是否轮播")
     """
     TextField 可以对内容无限制的输入, 避免了使用 CharField 的 max_length 上限问题
     在这里临时使用 TextField 后续使用富文本编辑器的时候会另做更改
