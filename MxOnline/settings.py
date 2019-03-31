@@ -27,12 +27,12 @@ SECRET_KEY = 'd2+m!5f9%o%to%c1#5k3ddnb=q__(7e2udza$8vo&ad4=5-p5s'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # 生产环境配置
-DEBUG = False
+# DEBUG = False
+
+# 开发环境
+DEBUG = True
+
 ALLOWED_HOSTS = ['*']
-
-# DEBUG = True
-# ALLOWED_HOSTS = []
-
 
 """自定义对 auth 的用户验证
 
@@ -173,6 +173,6 @@ EMAIL_USE_TLS = False
 EMAIL_FROM = "13160035772@163.com"
 
 # 生产环境static文件配置
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DATE_FORMAT = 'Y-m-d'

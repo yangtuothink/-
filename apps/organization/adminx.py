@@ -18,6 +18,7 @@ class CourseOrgAdmin(object):
     list_display = ['name', 'desc', 'click_nums', 'fav_nums', 'address', 'city', 'add_time']
     search_fields = ['name', 'desc', 'click_nums', 'fav_nums', 'address', 'city']
     list_filter = ['name', 'desc', 'click_nums', 'fav_nums', 'address', 'city', 'add_time']
+    # relfield_style = 'fk-ajax'  # 设置为 可以搜索的状态 , 默认是下拉的方式, 数据量比较大会很辛苦不论是读取还是手动选择
 
 
 # 讲师注册
