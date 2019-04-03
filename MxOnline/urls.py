@@ -70,7 +70,7 @@ urlpatterns = [
     url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 
     # 富文本相关url
-    # url(r'^ueditor/', include('DjangoUeditor.urls')),
+    url(r'^ueditor/', include('DjangoUeditor.urls')),
 
     # 生产环境static url配置
     # url(r'^static/(?P<path>.*)$', serve, {"document_root": STATIC_ROOT}),

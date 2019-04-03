@@ -1,4 +1,6 @@
 from datetime import datetime
+from DjangoUeditor.models import UEditorField
+
 from django.db import models
 from organization.models import CourseOrg, Teacher
 
@@ -10,12 +12,9 @@ class Course(models.Model):
     course_org = models.ForeignKey(CourseOrg, verbose_name="课程机构", null=True, blank=True)
     name = models.CharField(max_length=50, verbose_name="课程名称")
     desc = models.CharField(max_length=300, verbose_name="课程描述")
-    detail = models.TextField(verbose_name="课程详情")
+    detail = UEditorField(default="", width=600, height=300, imagePath="courses/ueditor/", filePath="courses/ueditor/",
+                          verbose_name="课程详情")
     is_banner = models.BooleanField(default=False, verbose_name="是否轮播")
-    """
-    TextField 可以对内容无限制的输入, 避免了使用 CharField 的 max_length 上限问题
-    在这里临时使用 TextField 后续使用富文本编辑器的时候会另做更改
-    """
     teacher = models.ForeignKey(Teacher, verbose_name="讲师", null=True, blank=True)
     degree = models.CharField(max_length=2, choices=(("cj", "初级"), ("zj", "中级"), ("gj", "高级")), verbose_name="难度")
     learn_time = models.IntegerField(default=0, verbose_name="学习时长(分钟数)")

@@ -36,6 +36,9 @@ class CourseAdmin(object):
 
     # refresh_times = [3,5]  # 设置刷新频率
 
+    style_fields = {"detail": "ueditor"}  # 设置 detail 字段的显示模式为 ueditor 方式
+    import_excel = True
+
     def queryset(self):  # 实现上下分表, 将轮播课程另外显示
         qs = super(CourseAdmin, self).queryset()
         qs = qs.filter(is_banner=False)
@@ -48,6 +51,12 @@ class CourseAdmin(object):
             course_org = obj.course_org
             course_org.course_nums = Course.objects.filter(course_org=course_org).count()
             course_org.save()
+
+    def post(self, request, *args, **kwargs):
+        #  导入逻辑
+        if 'excel' in request.FILES:
+            pass  # 此处是一系列的操作接口, 通过  request.FILES 拿到数据随意操作
+        return super(CourseAdmin, self).post(request, args, kwargs)  # 此返回值必须是这样
 
 
 # 轮播课程注册
