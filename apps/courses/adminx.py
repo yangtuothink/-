@@ -30,11 +30,11 @@ class CourseAdmin(object):
                    'add_time']
     ordering = ['-click_nums']  # 默认排序 按照点击数倒叙排列
     readonly_fields = ['fav_nums']  # 设置只读, 不可编辑
-    list_editable = ['degree', 'desc']  #
+    list_editable = ['degree', 'desc']  # 无需进入编辑页面即可编辑相关字段内容
     exclude = ['click_nums']  # 设置不可见 readonly_fields 和 exclude 是冲突的, 两个都设置会让 exclude 失效以只读显示
     inlines = [LessonInline, CourseResourceInline]  # 嵌套外键字段的 相关编辑操作, 可以添加多个, 但是不允许嵌套两层
 
-    # refresh_times = [3,5]  # 设置刷新频率
+    refresh_times = [3, 5]  # 设置刷新频率
 
     style_fields = {"detail": "ueditor"}  # 设置 detail 字段的显示模式为 ueditor 方式
     import_excel = True

@@ -332,6 +332,7 @@
 <script src="{% static 'js/validate.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/deco-user.js' %}" type="text/javascript"></script>
 {% block custim_js %}{% endblock %}
+
 <script type="text/javascript">
     $('.jsDeleteFav_course').on('click', function () {
         var _this = $(this),
@@ -343,7 +344,7 @@
             data: {
                 fav_type: 1,
                 fav_id: favid,
-                csrfmiddlewaretoken: 'CZW5wiFWpS2UMctyJtjgpFy9FXSQSyhd'
+                csrfmiddlewaretoken: '{{csrf_token}}'
             },
             async: true,
             success: function (data) {
@@ -362,7 +363,7 @@
             data: {
                 fav_type: 3,
                 fav_id: favid,
-                csrfmiddlewaretoken: 'CZW5wiFWpS2UMctyJtjgpFy9FXSQSyhd'
+                csrfmiddlewaretoken: '{{csrf_token}}'
             },
             async: true,
             success: function (data) {
@@ -381,7 +382,7 @@
             data: {
                 fav_type: 2,
                 fav_id: favid,
-                csrfmiddlewaretoken: 'CZW5wiFWpS2UMctyJtjgpFy9FXSQSyhd'
+                csrfmiddlewaretoken: '{{csrf_token}}'
             },
             async: true,
             success: function (data) {
